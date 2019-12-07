@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Account History</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8"><h4>Current Balance: {{balance | currency}}</h4></div>
+        <div class="col-md-4"><button type="button" class="btn btn-primary" (click)="onFetchTransactions()">Reload</button></div>
+    </div>
+
+    <hr>
+    <p *ngIf="isFetching">Loading...</p>
+    <p *ngIf="!isFetching && transactions.length === 0">No transactions found</p>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div id="accordion">
+                <div class="card" 
+                    *ngFor="let item of transactions"
+                    [ngClass]="{DEBIT:'transaction-debit'}[item.type | uppercase]"
+                >
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link trx-btn" data-toggle="collapse" [attr.data-target]="'#tr'+item.id" aria-expanded="true" [attr.aria-controls]="'tr'+item.id">
+                                <h4><span class="badge badge-dark">ID: {{item.id}}</span> : {{item.amount | currency}}</h4>
+                            </button>
+                        </h5>
+                    </div>
+                        
+                    <div [id]="'tr'+item.id" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <h4>Details</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">Type: {{item.type}}</div>
+                                <div class="col-md-4">Amount: {{item.amount | currency}}</div>
+                                <div class="col-md-4">Date: {{item.effectiveDate | date:'medium'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
